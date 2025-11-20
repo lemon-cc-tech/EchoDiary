@@ -1,0 +1,7 @@
+{
+  "name": "EchoDiary",
+  "description": "A serene, voice-first journaling application empowered by Gemini AI.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
