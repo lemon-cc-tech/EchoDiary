@@ -10,7 +10,7 @@ import { Microphone, PenNib, Sparkle, Tag } from 'phosphor-react';
 const Home: React.FC = () => {
   const { getTodaysEntry, updateTodaysEntry, setIsProcessing, isProcessing } = useJournal();
   const preferences = usePreferences();
-  const { visualTheme, userName } = preferences;
+  const { visualTheme, userName, apiKey } = preferences;
   const entry = getTodaysEntry();
   const isMaterial = visualTheme === 'material-you';
 
@@ -24,14 +24,15 @@ const Home: React.FC = () => {
     const aiResult = await generateJournalEntry({
       transcript: combinedTranscript,
       currentEntry: entry,
-      preferences: { style: preferences.diaryStyle, language: preferences.diaryLanguage }
+      preferences: { style: preferences.diaryStyle, language: preferences.diaryLanguage },
+      apiKey: apiKey // Pass the custom API key
     });
 
     if (aiResult) {
       updateTodaysEntry(aiResult);
     }
     setIsProcessing(false);
-  }, [entry, preferences, updateTodaysEntry, setIsProcessing]);
+  }, [entry, preferences, apiKey, updateTodaysEntry, setIsProcessing]);
 
   const { 
     isListening, 

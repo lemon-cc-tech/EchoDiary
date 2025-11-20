@@ -7,6 +7,7 @@ interface PreferencesContextType extends AppPreferences {
   setDiaryStyle: (style: DiaryStyle) => void;
   setDiaryLanguage: (lang: DiaryLanguage) => void;
   setVisualTheme: (theme: VisualTheme) => void;
+  setApiKey: (key: string) => void;
 }
 
 const PreferencesContext = createContext<PreferencesContextType | undefined>(undefined);
@@ -41,9 +42,10 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const setDiaryStyle = (diaryStyle: DiaryStyle) => setPreferences(prev => ({ ...prev, diaryStyle }));
   const setDiaryLanguage = (diaryLanguage: DiaryLanguage) => setPreferences(prev => ({ ...prev, diaryLanguage }));
   const setVisualTheme = (visualTheme: VisualTheme) => setPreferences(prev => ({ ...prev, visualTheme }));
+  const setApiKey = (apiKey: string) => setPreferences(prev => ({ ...prev, apiKey }));
 
   return (
-    <PreferencesContext.Provider value={{ ...preferences, setUserName, setDiaryStyle, setDiaryLanguage, setVisualTheme }}>
+    <PreferencesContext.Provider value={{ ...preferences, setUserName, setDiaryStyle, setDiaryLanguage, setVisualTheme, setApiKey }}>
       {children}
     </PreferencesContext.Provider>
   );

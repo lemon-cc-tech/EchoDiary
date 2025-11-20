@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { usePreferences } from '../context/PreferencesContext';
 import { useJournal } from '../context/JournalContext';
 import { DiaryLanguage, DiaryStyle } from '../types';
-import { ArrowLeft, CheckCircle, DownloadSimple, UploadSimple, Brain, Database, CaretDown, Globe, Palette, CaretRight } from 'phosphor-react';
+import { ArrowLeft, CheckCircle, DownloadSimple, UploadSimple, Brain, Database, CaretDown, Globe, Palette, CaretRight, Key, Eye, EyeSlash } from 'phosphor-react';
 
 // --- Helper Components Defined Outside to Prevent Re-renders ---
 
@@ -135,11 +135,12 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
-  const { diaryStyle, diaryLanguage, setDiaryStyle, setDiaryLanguage } = usePreferences();
+  const { diaryStyle, diaryLanguage, setDiaryStyle, setDiaryLanguage, apiKey, setApiKey } = usePreferences();
   const { replaceAllEntries } = useJournal();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importStatus, setImportStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [showKey, setShowKey] = useState(false);
 
   // Trigger animations on mount
   const [isLoaded, setIsLoaded] = useState(false);
@@ -301,6 +302,40 @@ const Settings: React.FC = () => {
              <LangOption value={DiaryLanguage.HINDI} label="Hindi" currentValue={diaryLanguage} onSelect={setDiaryLanguage} />
              <LangOption value={DiaryLanguage.MATCH_INPUT} label="Match Input Language" currentValue={diaryLanguage} onSelect={setDiaryLanguage} />
           </AccordionItem>
+
+          {/* API Configuration Accordion */}
+           <AccordionItem 
+            id="api"
+            title="Brain Power"
+            icon={Key}
+            currentValue={apiKey ? 'Custom Key Set' : 'Default System Key'}
+            delay="275ms"
+            isOpen={expandedSection === "api"}
+            onToggle={handleToggle}
+            isLoaded={isLoaded}
+          >
+            <div className="p-1">
+                <p className="text-xs text-stone-500 dark:text-stone-400 mb-3 leading-relaxed">
+                  Provide your own Google Gemini API key to power EchoDiary. Leave empty to use the default system key.
+                </p>
+                <div className="relative">
+                  <input 
+                    type={showKey ? "text" : "password"}
+                    value={apiKey || ''}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    placeholder="Enter Gemini API Key"
+                    className="w-full p-4 pr-12 rounded-2xl bg-stone-50 dark:bg-stone-700/50 border-2 border-stone-100 dark:border-stone-700 text-stone-700 dark:text-stone-200 focus:border-teal-500 outline-none transition-colors text-sm font-mono"
+                  />
+                  <button 
+                    onClick={() => setShowKey(!showKey)}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition-colors"
+                  >
+                    {showKey ? <EyeSlash size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+            </div>
+          </AccordionItem>
+
         </div>
 
         {/* Data Sanctuary Group */}

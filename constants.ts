@@ -6,6 +6,7 @@ export const DEFAULT_PREFERENCES = {
   diaryLanguage: DiaryLanguage.ENGLISH,
   theme: 'dark' as const,
   visualTheme: 'echoism' as const,
+  apiKey: '',
 };
 
 export const AI_MODEL_NAME = 'gemini-2.5-flash';

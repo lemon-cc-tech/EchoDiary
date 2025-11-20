@@ -9,15 +9,24 @@ interface GenerateEntryParams {
     style: DiaryStyle;
     language: DiaryLanguage;
   };
+  apiKey?: string; // Optional user key
 }
 
 export const generateJournalEntry = async (params: GenerateEntryParams): Promise<Partial<JournalEntry> | null> => {
-  const { transcript, preferences } = params;
+  const { transcript, preferences, apiKey } = params;
 
   if (!transcript.trim()) return null;
 
+  // Use user provided key, or fallback to env variable
+  const finalApiKey = apiKey && apiKey.trim() !== '' ? apiKey : process.env.API_KEY;
+
+  if (!finalApiKey) {
+    console.error("No API Key available");
+    throw new Error("API Key is missing. Please check settings or environment variables.");
+  }
+
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: finalApiKey });
     
     const systemPrompt = `
       You are Echo, a serene and empathetic AI journaling assistant. 

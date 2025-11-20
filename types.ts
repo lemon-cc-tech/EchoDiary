@@ -23,6 +23,7 @@ export interface AppPreferences {
   diaryLanguage: DiaryLanguage;
   theme: 'light' | 'dark';
   visualTheme: VisualTheme;
+  apiKey?: string; // Optional user-provided API key
 }
 
 export enum DiaryStyle {
